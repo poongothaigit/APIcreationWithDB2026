@@ -1,0 +1,157 @@
+openapi: 3.0.0
+
+info:
+  title: Role-Based Login API
+  description: Simple Login API with JWT Authentication and Role-Based Access (User/Admin)
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: Sara
+        email:
+          type: string
+          example: sara@gmail.com
+        password:
+          type: string
+          example: 02072026
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: sara@gmail.com
+        password:
+          type: string
+          example: 02072026
+
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          example: your_refresh_token_here
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user (user/admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+
+      responses:
+        200:
+          description: User registered successfully
+        400:
+          description: Email already exists or invalid input
+
+  /api/auth/login:
+    post:
+      summary: Login user and get JWT access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+
+      responses:
+        200:
+          description: Login successful (returns access + refresh token)
+        400:
+          description: Invalid email or password
+
+  /api/auth/profile:
+    get:
+      summary: Get current logged-in user profile
+      security:
+        - BearerAuth: []
+
+      responses:
+        200:
+          description: Profile returned successfully
+        401:
+          description: Missing or invalid token
+
+  /api/auth/refresh:
+    post:
+      summary: Generate new access token using refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshRequest"
+
+      responses:
+        200:
+          description: New access token generated
+        403:
+          description: Invalid refresh token
+
+  /api/auth/logout:
+    post:
+      summary: Logout user (removes refresh token)
+      security:
+        - BearerAuth: []
+
+      responses:
+        200:
+          description: Logged out successfully
+        401:
+          description: Unauthorized
+
+  /api/auth/admin/dashboard:
+    get:
+      summary: Admin-only dashboard route
+      security:
+        - BearerAuth: []
+
+      responses:
+        200:
+          description: Welcome Admin
+        403:
+          description: Admin only access
+
+  /api/auth/user/dashboard:
+    get:
+      summary: User-only dashboard route
+      security:
+        - BearerAuth: []
+
+      responses:
+        200:
+          description: Welcome User
+        403:
+          description: User only access

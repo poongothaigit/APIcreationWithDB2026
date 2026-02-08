@@ -5,9 +5,9 @@ test("Register new user", async ({ request }) => {
   const role = "user";
   const response = await request.post("/api/auth/register", {
     data: {
-      name: "Kiran",
-      email: "kiran@gmail.com",
-      password: "03072026",
+      name: "Diya",
+      email: "dia@gmail.com",
+      password: "04072026",
       role: role
     }
   });

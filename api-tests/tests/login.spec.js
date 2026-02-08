@@ -4,8 +4,8 @@ test("Login user and get access token", async ({ request }) => {
 
   const response = await request.post("/api/auth/login", {
     data: {
-      email: "kiran@gmail.com",
-      password: "03072026"
+      email: "diya@gmail.com",
+      password: "04072026"
     }
   });
 

@@ -9,8 +9,8 @@ test("Register new user", async ({ request }) => {
   const role = "admin";
   const response = await request.post("/api/auth/register", {
     data: {
-      name: "Diya",
-      email: "diyaa@gmail.com",
+      name: "Shanvi",
+      email: "shanvi@gmail.com",
       password: "04072026",
       role: role
     }
@@ -29,7 +29,7 @@ test("Login user and get access token", async ({ request }) => {
 
   const response = await request.post("/api/auth/login", {
     data: {
-      email: "diyaa@gmail.com",
+      email: "shanvi@gmail.com",
       password: "04072026"
     }
   });
@@ -45,7 +45,7 @@ test("Login user and get access token", async ({ request }) => {
 test("User should NOT access admin dashboard", async ({ request }) => {
 
   // Step 1: Get token from helper
-   const token = await getAccessToken(request, "diyaa@gmail.com", "04072026"); 
+   const token = await getAccessToken(request, "shanvi@gmail.com", "04072026"); 
 
 // Step 2: Decode token to get role
   const decoded = jwt.decode(token); // just decode, not verify
@@ -75,7 +75,7 @@ test("User should NOT access admin dashboard", async ({ request }) => {
 test("User can access user dashboard", async ({ request }) => {
   
   // Step 1: Get token from helper
-  const token = await getAccessToken(request, "diyaa@gmail.com", "04072026");
+  const token = await getAccessToken(request, "shanvi@gmail.com", "04072026");
 
   // Step 2: Access user dashboard
   const response = await request.get("/api/auth/user/dashboard", {

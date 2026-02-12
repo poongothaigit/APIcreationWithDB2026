@@ -13,11 +13,11 @@ router.get("/ping", (req, res) => {
   res.send("auth ping");
 });
 
-// ✅ Register API
+//  Register API
 router.post("/register", async (req, res) => {
       console.log(" /api/auth/register hit with body:", req.body);
 
-  const { name, email, password, role } = req.body;
+  const { name, email, password, phoneNumber, role } = req.body;
   console.log(" /register body:", req.body);
 
   // Validate role
@@ -32,6 +32,7 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      phoneNumber,
       role: finalRole  // explicitly set role for role based access
     });
      console.log(" User created:", user._id);
@@ -76,7 +77,7 @@ router.post("/login", async (req, res) => {
 user.refreshToken = refreshToken;
 await user.save();
 // 6. Send response ONCE
- res.json({ message: "Login successful", accessToken,refreshToken});
+ res.json({ message: `Login successful`, accessToken,refreshToken});
 
   }
   

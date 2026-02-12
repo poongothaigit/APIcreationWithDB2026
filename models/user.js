@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
   refreshToken: {
   type: String
 },
+phoneNumber: {
+    type: Number,
+    required: true
+  },
 role: {
   type: String,
   enum: ["user", "admin"],
